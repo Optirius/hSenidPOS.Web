@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IDbContext, DbContext>();
-builder.Services.AddScoped<IDummyManager, DummyManager>();
-builder.Services.AddScoped<IDummyRepository, DummyRepository>();
+builder.Services.AddScoped<IBillingManager, BillingManager>();
+builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 
 
 var app = builder.Build();
@@ -33,6 +33,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Billing}/{action=Index}/{id?}");
 
 app.Run();

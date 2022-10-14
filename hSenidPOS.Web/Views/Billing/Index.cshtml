@@ -1,0 +1,373 @@
+﻿@{
+    ViewData["Title"] = "Billing Menu";
+}
+
+<div>
+
+    <form>
+        <fieldset id="BillingForm">
+
+            <div class="form-group">
+                <div style="height: 50px;">
+                </div>
+
+                <div class="page-header" id="banner">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-7 col-sm-6" style="margin-bottom: 20px;">
+                            <h1>@ViewData["Title"]</h1>
+                            <div align="right">
+                                <h6 style="color: green; font-weight: bold;">{{SuccessMessage}}</h6>
+                                <h6 style="color: darkred; font-weight: bold;">{{WarningMessage}}</h6>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row" style="margin-left: auto;">
+
+                    <div class="bordered col-lg-9 col-md-8 col-sm-7">
+
+                        <div class="box">
+
+                            <div class="form-group">
+                                <label class="form-label" for="Date">Date</label>
+                                <input style=" display: inline-block; width: 150px" v-model="Date" id="Date" type="text" readonly="">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="Time">Time</label>
+                                <input style="display: inline-block; width: 150px" v-model="Time" id="Time" type="text" readonly="">
+                            </div>
+
+                            <div class="bordered">
+                                <div class="box">
+                                    <div>
+                                        <label class="form-label" style="display: inline-block;" for="Item">Item</label>
+                                        <select id="Item" v-model="Item" v-on:change="itemSelect">
+                                            <option v-for="m in ItemsList" v-bind:value="m.id">{{m.name}}</option>
+                                        </select>
+
+                                        <label class="form-label" for="Quantity">Quantity</label>
+                                        <input style=" display: inline-block; width: 50px" id="Date" type="number" min="1" max="20" v-model="Quantity" v-on:change="calculateAmount">
+
+                                        <label class="form-label" for="Price">Price / Unit</label>
+                                        <input style=" display: inline-block; width: 100px" id="Price" type="text" readonly="" v-model="Price">
+
+                                        <label class="form-label" for="Amount">Amount</label>
+                                        <input style=" display: inline-block; width: 100px" id="Amount" type="text" readonly="" v-model="Amount">
+                                    </div>
+
+                                    <div align="right">
+                                        <button type="button" class="btn btn-success" v-on:click="AddtoBill">Add to Bill</button>
+                                        <button type="button" class="btn btn-warning rightmargined" v-on:click="ClearAll">Reset</button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="bordered">
+                                <div class="box">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="table-primary">
+                                                <th scope="row">Item</th>
+                                                <th scope="row">Quantity</th>
+                                                <th scope="row">Price / Unit</th>
+                                                <th scope="row">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <thead>
+                                            <tr v-for="items in ItemTable">
+                                                <td>{{items.name}}</td>
+                                                <td>{{items.quantity}}</td>
+                                                <td>{{items.price}}</td>
+                                                <td>{{items.amount}}</td>
+                                        </thead>
+                                    </table>
+
+                                    <div>
+                                        <span style=" display: inline-block; padding-left: 10px"></span>
+
+                                        <label class="form-label" for="SubTotal">Sub Total</label>
+                                        <input style=" display: inline-block; width: 100px;" id="SubTotal" type="text" readonly="" v-model="SubTotal">
+
+                                        <label class="form-label" for="Discount">Discount</label>
+                                        <input style=" display: inline-block; width: 50px" id="Discount" type="number" min="0" max="100" v-model="Discount" v-on:change="AddDiscount">
+
+                                        <label class="form-label" for="Vat">Vat</label>
+                                        <input style=" display: inline-block; width: 50px" id="Vat" type="text" readonly="" v-model="Vat">
+
+                                        <span style =" display: inline-block; padding-right: 50px"></span>
+
+                                        <label class="form-label" for="GrandTotal">Grand Total</label>
+                                        <input style=" display: inline-block; width: 150px" id="GrandTotal" type="text" readonly="" v-model="GrandTotal">
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                            <button type="button" class="btn btn-primary" v-on:click="SaveBill">Amount Paid and Add New Bill</button>
+
+                        </div>
+                    </div>
+                    
+                </div>
+
+                
+            </div>
+
+            
+        </fieldset>
+    </form>
+
+</div>
+
+<style>
+
+    input{
+        margin-right: 30px;
+        margin-bottom: 20px;
+    }
+
+    .box {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+    .bordered{
+        border-style: solid;
+        border-width: 2px;
+        margin-bottom: 20px;
+        border-color: gray;
+    }
+
+    label{
+        margin-right: 20px;
+        display: inline-block;
+    }
+
+    select{
+        margin-right: 30px;
+        width: 150px
+    }
+
+    .rightmargined{
+        margin-right: 20px;
+    }
+
+    table{
+        margin-bottom: 20px;
+    }
+
+</style>
+
+
+@{
+    await Html.RenderPartialAsync("_ExternalCDN");
+}
+
+<script>
+
+    var today = new Date();
+    var time = today.getHours().toString().padStart(2, "0") + ":" + today.getMinutes().toString().padStart(2, "0") + ":" + today.getSeconds().toString().padStart(2, "0");
+    var timeString12hr = new Date('1970-01-01T' + time + 'Z')
+        .toLocaleTimeString('en-US',
+            { timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' }
+        );
+
+    new Vue({
+        el: "#BillingForm",
+
+        data: {
+            Date: (today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear()),
+            Time: timeString12hr,
+            Item: "",
+            Quantity: "",
+            Price: "",
+            Amount: "",
+            Discount: "",
+            Vat: "",
+            SubTotal: "",
+            GrandTotal: "",
+            SuccessMessage: "",
+            WarningMessage: "",
+
+            ItemsList:{
+                id: "",
+                name: "",
+                price: "",
+            },
+
+            SelectedItem:{
+                id: "",
+                name: "",
+                price: "",
+            },
+
+            Items: {
+                id: "",
+                name: "",
+                price: "",
+                quantity: "",
+                amount: ""
+            },
+
+            ItemTable: [],
+        },
+
+        created() {
+
+            setInterval(function () {
+                this.Time = new Date('1970-01-01T' + time + 'Z')
+                    .toLocaleTimeString('en-US',
+                        { timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' }
+                    );
+            }, 60000);
+
+            axios.get("/Billing/GetItemsList")
+                .then(res => {
+                    this.ItemsList = res.data;
+                });
+        },
+
+        methods: {
+
+            itemSelect: function () {
+
+                this.SelectedItem = this.ItemsList.find(x => x.id == this.Item);
+
+                this.Quantity = 1;
+
+                this.Price = this.SelectedItem.price;
+
+                this.Amount = this.SelectedItem.price;
+            },
+
+            calculateAmount: function () {
+
+                if (this.Quantity <= 20 && this.Quantity>0) {
+
+                    this.Amount = this.Quantity * this.Price;
+
+                }else{
+
+                    this.Quantity = 1;
+                    this.Amount = this.Quantity * this.Price;
+                }
+            },
+
+            AddtoBill: function () {
+
+                if (this.Item == "") {
+                    this.WarningMessage = "•Select an Item first!";
+                    return;
+                }else{
+                    this.WarningMessage = "";
+                }
+
+                this.Items = this.ItemsList.find(x => x.id == this.Item);
+                this.Items.quantity = parseInt(this.Quantity);
+                this.Items.amount = this.Amount;
+                this.Items = JSON.stringify(this.Items)
+                this.Items = JSON.parse(this.Items)
+                this.ItemTable.push(this.Items);
+
+                var subtotal = 0;
+
+                for (var i = 0; i < this.ItemTable.length; i++) {
+                    if (this.ItemTable[i].amount) {
+                        subtotal = parseInt(subtotal) + parseInt(this.ItemTable[i].amount);
+                    }
+                }
+
+                this.SubTotal = subtotal;
+                this.Discount = "0";
+                this.Vat = "12%";
+
+                this.GrandTotal = parseFloat(parseInt(this.SubTotal) * 12 / 100 + parseInt(this.SubTotal)).toFixed(2);
+            },
+
+            AddDiscount: function () {
+
+                if (this.Discount <= 100 && this.Discount > 0) {
+
+                    this.GrandTotal = parseFloat((parseInt(this.SubTotal) * 12 / 100 + parseInt(this.SubTotal)) - (parseInt(this.SubTotal) * 12 / 100 + parseInt(this.SubTotal)) * parseInt(this.Discount) / 100).toFixed(2);
+                    
+                    if (this.GrandTotal != 0) {
+                        this.WarningMessage = "";
+                    }
+
+                } else {
+
+                    this.Discount = "";
+                    this.GrandTotal = parseFloat(parseInt(this.SubTotal) * 12 / 100 + parseInt(this.SubTotal)).toFixed(2);
+                }
+            },
+
+            ClearAll: function () {
+                this.Date = (today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear());
+                this.Time = new Date('1970-01-01T' + time + 'Z')
+                    .toLocaleTimeString('en-US',
+                        { timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' }
+                    );
+                this.Item = "";
+                this.Quantity = "";
+                this.Price = "";
+                this.Amount = "";
+                this.Discount = "";
+                this.Vat = "";
+                this.SubTotal = "";
+                this.GrandTotal = "";
+                this.SuccessMessage = "";
+                this.WarningMessage = "";
+                this.ItemTable = [];
+            },
+
+            SaveBill: function () {
+                var bodyFormData = new FormData();
+
+                if (this.ItemTable.length == 0) {
+                    this.WarningMessage = "•Please Add Items to Bill List Before Paying!";
+                    return;
+                }
+
+                if (this.GrandTotal == 0) {
+                    this.WarningMessage = "•Grand Total can not be 0!";
+                    return;
+                }
+
+
+
+                bodyFormData.append('discount', this.Discount);
+                bodyFormData.append('vat', 12);
+                bodyFormData.append('GrandTotal', this.GrandTotal);
+                bodyFormData.append('billInfos', JSON.stringify(this.ItemTable));
+
+                console.log(JSON.stringify(this.ItemTable));
+
+
+
+                axios({
+                    method: 'post',
+                    url: '/Billing/SaveBill',
+                    data: bodyFormData,
+                }).then(response => {
+                    this.ClearAll();
+                    this.SuccessMessage = "•Amount Paid Successfully!";
+                }).catch(function (error) {
+                    console.log(error);
+                });
+
+            }
+        }
+
+    });
+
+
+</script>

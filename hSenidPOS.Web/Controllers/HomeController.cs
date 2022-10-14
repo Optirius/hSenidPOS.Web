@@ -8,11 +8,10 @@ namespace hSenidPOS.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IDummyManager _idummyManager;
 
-        public HomeController(ILogger<HomeController> logger, IDummyManager dummyManager)
+
+        public HomeController(ILogger<HomeController> logger)
         {
-            _idummyManager = dummyManager;
             _logger = logger;
         }
 
@@ -23,7 +22,7 @@ namespace hSenidPOS.Web.Controllers
 
         public IActionResult Privacy()
         {
-            _idummyManager.InsertData();
+
             return View();
         }
 

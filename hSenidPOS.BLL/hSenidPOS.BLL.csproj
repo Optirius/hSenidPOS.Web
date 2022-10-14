@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hSenidPOS.DataAccess\hSenidPOS.DAL.csproj" />
+    <ProjectReference Include="..\hSenidPOS.Models\hSenidPOS.Models.csproj" />
   </ItemGroup>
 
 </Project>

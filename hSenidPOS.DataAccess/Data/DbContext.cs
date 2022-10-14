@@ -81,36 +81,55 @@ namespace hSenidPOS.DAL.Data
 
         }
 
-        //public DataTable GetSingleInt(string query, List<param> @params)
-        //{
-        //    DataTable data = new DataTable();
+        public DataTable GetDataTable(string query)
+        {
+            DataTable data = new DataTable();
 
-        //    using (SqlConnection con = new SqlConnection(constr))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand(query))
-        //        {
-        //            cmd.Connection = con;
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
 
-        //            foreach (param param in @params)
-        //            {
-        //                cmd.Parameters.Add(param.ParamName, param.SqlDbType).Value = param.SqlValue;
-        //            }
+                    con.Open();
 
-        //            con.Open();
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        sda.Fill(data);
+                    }
 
-        //            using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
-        //            {
-        //                sda.Fill(data);
-        //            }
+                    con.Close();
 
-        //            con.Close();
+                }
+            }
 
-        //        }
-        //    }
+            return data;
 
-        //    return data;
+        }
 
-        //}
+        public int GetSingleInt(string query)
+        {
+            var result = 0;
+
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                using (SqlCommand cmd = new SqlCommand(query))
+                {
+                    cmd.Connection = con;
+
+                    con.Open();
+
+                    result = (Int32)cmd.ExecuteScalar();
+
+                    con.Close();
+
+                }
+            }
+
+            return result;
+
+        }
+
 
     }
 }
