@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hSenidPOS.Web", "hSenidPOS.Web\hSenidPOS.Web.csproj", "{4324E78E-FDA2-439B-A193-FFF22B67DB83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hSenidPOS.Web", "hSenidPOS.Web\hSenidPOS.Web.csproj", "{4324E78E-FDA2-439B-A193-FFF22B67DB83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hSenidPOS.Models", "hSenidPOS.Models\hSenidPOS.Models.csproj", "{BFF417D8-AD8D-4F8B-97D3-A1A938EF55BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hSenidPOS.Models", "hSenidPOS.Models\hSenidPOS.Models.csproj", "{BFF417D8-AD8D-4F8B-97D3-A1A938EF55BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hSenidPOS.DAL", "hSenidPOS.DataAccess\hSenidPOS.DAL.csproj", "{E514554E-49CA-4F6B-8EA5-5D6D6E8FA308}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hSenidPOS.DAL", "hSenidPOS.DataAccess\hSenidPOS.DAL.csproj", "{E514554E-49CA-4F6B-8EA5-5D6D6E8FA308}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hSenidPOS.Utility", "hSenidPOS.Utility\hSenidPOS.Utility.csproj", "{AD501AAE-7D91-41A4-AD59-D872EB5F3DAE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hSenidPOS.BLL", "hSenidPOS.BLL\hSenidPOS.BLL.csproj", "{F3B5B5F7-02DE-4C45-BF0C-E4A11CA0B87B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hSenidPOS.BLL", "hSenidPOS.BLL\hSenidPOS.BLL.csproj", "{F3B5B5F7-02DE-4C45-BF0C-E4A11CA0B87B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{E514554E-49CA-4F6B-8EA5-5D6D6E8FA308}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E514554E-49CA-4F6B-8EA5-5D6D6E8FA308}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E514554E-49CA-4F6B-8EA5-5D6D6E8FA308}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD501AAE-7D91-41A4-AD59-D872EB5F3DAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD501AAE-7D91-41A4-AD59-D872EB5F3DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD501AAE-7D91-41A4-AD59-D872EB5F3DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD501AAE-7D91-41A4-AD59-D872EB5F3DAE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3B5B5F7-02DE-4C45-BF0C-E4A11CA0B87B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3B5B5F7-02DE-4C45-BF0C-E4A11CA0B87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3B5B5F7-02DE-4C45-BF0C-E4A11CA0B87B}.Release|Any CPU.ActiveCfg = Release|Any CPU

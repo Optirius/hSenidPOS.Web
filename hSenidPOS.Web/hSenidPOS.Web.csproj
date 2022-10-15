@@ -10,7 +10,6 @@
     <ProjectReference Include="..\hSenidPOS.BLL\hSenidPOS.BLL.csproj" />
     <ProjectReference Include="..\hSenidPOS.DataAccess\hSenidPOS.DAL.csproj" />
     <ProjectReference Include="..\hSenidPOS.Models\hSenidPOS.Models.csproj" />
-    <ProjectReference Include="..\hSenidPOS.Utility\hSenidPOS.Utility.csproj" />
   </ItemGroup>
 
 </Project>

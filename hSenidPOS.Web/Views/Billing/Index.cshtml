@@ -93,13 +93,13 @@
                                         <label class="form-label" for="SubTotal">Sub Total</label>
                                         <input style=" display: inline-block; width: 100px;" id="SubTotal" type="text" readonly="" v-model="SubTotal">
 
-                                        <label class="form-label" for="Discount">Discount</label>
+                                        <label class="form-label" for="Discount">Discount %</label>
                                         <input style=" display: inline-block; width: 50px" id="Discount" type="number" min="0" max="100" v-model="Discount" v-on:change="AddDiscount">
 
                                         <label class="form-label" for="Vat">Vat</label>
                                         <input style=" display: inline-block; width: 50px" id="Vat" type="text" readonly="" v-model="Vat">
 
-                                        <span style =" display: inline-block; padding-right: 50px"></span>
+                                        <span style =" display: inline-block; padding-right: 30px"></span>
 
                                         <label class="form-label" for="GrandTotal">Grand Total</label>
                                         <input style=" display: inline-block; width: 150px" id="GrandTotal" type="text" readonly="" v-model="GrandTotal">
@@ -333,7 +333,7 @@
                 var bodyFormData = new FormData();
 
                 if (this.ItemTable.length == 0) {
-                    this.WarningMessage = "•Please Add Items to Bill List Before Paying!";
+                    this.WarningMessage = "•Please Add Items to Bill List before Paying!";
                     return;
                 }
 
@@ -342,16 +342,10 @@
                     return;
                 }
 
-
-
                 bodyFormData.append('discount', this.Discount);
                 bodyFormData.append('vat', 12);
                 bodyFormData.append('GrandTotal', this.GrandTotal);
                 bodyFormData.append('billInfos', JSON.stringify(this.ItemTable));
-
-                console.log(JSON.stringify(this.ItemTable));
-
-
 
                 axios({
                     method: 'post',
